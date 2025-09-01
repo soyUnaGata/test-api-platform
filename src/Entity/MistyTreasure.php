@@ -8,7 +8,9 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MistyTreasureRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    shortName: 'Treasure',
+)]
 class MistyTreasure
 {
     #[ORM\Id]
@@ -24,6 +26,13 @@ class MistyTreasure
 
     #[ORM\Column]
     private ?int $value = null;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    private ?\DateTimeInterface $plunderedAt;
+
+    public function __construct(){
+        $this->plunderedAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -64,5 +73,9 @@ class MistyTreasure
         $this->value = $value;
 
         return $this;
+    }
+    public function getPlunderedAt(): ?\DateTimeImmutable
+    {
+        return $this->plunderedAt;
     }
 }
