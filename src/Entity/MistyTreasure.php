@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: MistyTreasureRepository::class)]
 #[ApiResource(
     shortName: 'Treasure',
+    paginationItemsPerPage: 10,
 )]
 class MistyTreasure
 {
