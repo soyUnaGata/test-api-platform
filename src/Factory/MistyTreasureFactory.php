@@ -33,8 +33,9 @@ final class MistyTreasureFactory extends PersistentProxyObjectFactory
     {
         return [
             'description' => self::faker()->text(),
-            'name' => self::faker()->text(255),
+            'name' => self::faker()->name,
             'value' => self::faker()->randomNumber(),
+            'owner' => UserFactory::new(),
         ];
     }
 

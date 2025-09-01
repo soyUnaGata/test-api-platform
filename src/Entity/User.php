@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -45,6 +47,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:write'])]
     #[Assert\NotBlank(groups: ['user:write'])]
     private ?string $password = null;
+
+    /**
+     * @var Collection<int, MistyTreasure>
+     */
+    #[ORM\OneToMany(targetEntity: MistyTreasure::class, mappedBy: 'owner')]
+    private Collection $mistyTreasures;
+
+    public function __construct()
+    {
+        $this->mistyTreasures = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -125,5 +138,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         // @deprecated, to be removed when upgrading to Symfony 8
+    }
+
+    /**
+     * @return Collection<int, MistyTreasure>
+     */
+    public function getMistyTreasures(): Collection
+    {
+        return $this->mistyTreasures;
+    }
+
+    public function addMistyTreasure(MistyTreasure $mistyTreasure): static
+    {
+        if (!$this->mistyTreasures->contains($mistyTreasure)) {
+            $this->mistyTreasures->add($mistyTreasure);
+            $mistyTreasure->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMistyTreasure(MistyTreasure $mistyTreasure): static
+    {
+        if ($this->mistyTreasures->removeElement($mistyTreasure)) {
+            // set the owning side to null (unless already changed)
+            if ($mistyTreasure->getOwner() === $this) {
+                $mistyTreasure->setOwner(null);
+            }
+        }
+
+        return $this;
     }
 }

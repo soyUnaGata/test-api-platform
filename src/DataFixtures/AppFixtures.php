@@ -12,7 +12,11 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-       MistyTreasureFactory::createMany(30);
         UserFactory::createMany(5);
+        MistyTreasureFactory::createMany(30, function(){
+            return [
+                'owner' => UserFactory::random(),
+            ];
+        });
     }
 }

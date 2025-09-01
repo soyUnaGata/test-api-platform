@@ -35,6 +35,10 @@ class MistyTreasure
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeInterface $plunderedAt;
 
+    #[ORM\ManyToOne(inversedBy: 'mistyTreasures')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $owner = null;
+
     public function __construct(){
         $this->plunderedAt = new \DateTimeImmutable();
     }
@@ -90,5 +94,17 @@ class MistyTreasure
     public function getPlunderedAtAgo(): string
     {
         return Carbon::instance($this->plunderedAt)->diffForHumans();
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): static
+    {
+        $this->owner = $owner;
+
+        return $this;
     }
 }
