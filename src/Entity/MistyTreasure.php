@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\MistyTreasureRepository;
+use Carbon\Carbon;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -77,5 +78,13 @@ class MistyTreasure
     public function getPlunderedAt(): ?\DateTimeImmutable
     {
         return $this->plunderedAt;
+    }
+
+    /**
+     * A human-readable representation of when this treasure was plundered.
+     */
+    public function getPlunderedAtAgo(): string
+    {
+        return Carbon::instance($this->plunderedAt)->diffForHumans();
     }
 }
