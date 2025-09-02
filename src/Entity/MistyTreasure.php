@@ -5,6 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use App\Repository\MistyTreasureRepository;
 use Carbon\Carbon;
 use Doctrine\DBAL\Types\Types;
@@ -15,6 +17,20 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ApiResource(
     shortName: 'Treasure',
     paginationItemsPerPage: 10,
+)]
+#[ApiFilter(SearchFilter::class, properties: [
+    'owner.username' => 'partial',
+])]
+#[ApiResource(
+    uriTemplate: '/users/{user_id}/treasures.{_format}',
+    shortName: 'Treasure',
+    operations: [new GetCollection()],
+    uriVariables: [
+        'user_id' => new Link(
+            fromProperty: 'mistyTreasures',
+            fromClass: User::class,
+        ),
+    ],
 )]
 class MistyTreasure
 {
