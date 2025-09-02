@@ -31,6 +31,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
             fromClass: User::class,
         ),
     ],
+    normalizationContext: ['groups' => ['treasure:read']],
 )]
 class MistyTreasure
 {
