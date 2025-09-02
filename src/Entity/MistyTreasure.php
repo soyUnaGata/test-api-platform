@@ -40,6 +40,7 @@ class MistyTreasure
 
     #[ORM\ManyToOne(inversedBy: 'mistyTreasures')]
     #[ORM\JoinColumn(nullable: false)]
+    #[ApiFilter(SearchFilter::class, strategy: 'exact')]
     private ?User $owner = null;
 
     public function __construct(){
