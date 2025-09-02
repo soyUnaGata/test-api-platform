@@ -51,7 +51,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, MistyTreasure>
      */
-    #[ORM\OneToMany(targetEntity: MistyTreasure::class, mappedBy: 'owner')]
+    #[ORM\OneToMany(targetEntity: MistyTreasure::class, mappedBy: 'owner', cascade: ['persist'], orphanRemoval: true)]
+    #[Groups(['user:read', 'user:write'])]
     private Collection $mistyTreasures;
 
     public function __construct()

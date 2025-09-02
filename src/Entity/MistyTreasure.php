@@ -9,6 +9,7 @@ use App\Repository\MistyTreasureRepository;
 use Carbon\Carbon;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: MistyTreasureRepository::class)]
 #[ApiResource(
@@ -24,12 +25,14 @@ class MistyTreasure
 
     #[ORM\Column(length: 255)]
     #[ApiFilter(SearchFilter::class, strategy: 'partial')]
+    #[Groups(['user:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
     #[ORM\Column]
+    #[Groups(['user:read'])]
     private ?int $value = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
